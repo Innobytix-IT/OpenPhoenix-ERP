@@ -16,49 +16,6 @@
 | ![PDF Rechnung](screenshots/5.rechnungpdf.png) | ![Mahnwesen](screenshots/8.mahnwesen.png) |
 
 
-<p align="center">
-  <em>Der zentrale Launcher, der alle Module der Suite vereint.</em><br>
-  <img src="screenshots/1.launcher.png" alt="Launcher" width="80%">
-</p>
-
----
-
-<p align="center">
-  <em>Sicherheit durch Design: Das DatenSchloss schützt die Datenbank vor unbefugtem Zugriff.</em><br>
-  <img src="screenshots/2.datenschloss.png" alt="DatenSchloss" width="80%">
-</p>
-
----
-
-<p align="center">
-  <em>Vollständige Verwaltung von Kunden (CRM) und Lagerbeständen (Warenwirtschaft).</em><br>
-  <img src="screenshots/3.kunden.png" alt="Kundenverwaltung" width="49%">
-  <img src="screenshots/8.lager.png" alt="Lagerverwaltung" width="49%">
-</p>
-
----
-
-<p align="center">
-  <em>Ein leistungsstarkes Modul zur Erstellung und Verwaltung von Rechnungen und Mahnungen.</em><br>
-  <img src="screenshots/4.rechnung.png" alt="Rechnungsfenster" width="49%">
-  <img src="screenshots/8.mahnwesen.png" alt="Mahnwesen" width="49%">
-</p>
-
----
-
-<p align="center">
-  <em>GoBD-konforme Prozesse und professionelle Dokumentenerstellung sind Kernfunktionen des Systems.</em><br>
-  <img src="screenshots/6.gobd.png" alt="GoBD Dialog" width="32%">
-  <img src="screenshots/7.rechnungstorn.png" alt="Rechnungsstorno" width="32%">
-  <img src="screenshots/5.rechnungpdf.png" alt="PDF Rechnung" width="32%">
-</p>
-
----
-
-<p align="center">
-  <em>Das Business-Intelligence-Dashboard zur Analyse von KPIs und Geschäftsdaten.</em><br>
-  <img src="screenshots/9.dashboard.png" alt="Dashboard" width="80%">
-</p>
 
 ---
 
