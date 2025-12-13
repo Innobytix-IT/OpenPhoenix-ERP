@@ -10,7 +10,7 @@
 | ![Launcher](screenshots/1.launcher.png) | ![Kundenverwaltung](screenshots/3.kunden.png) |
 | ![DatenSchloss](screenshots/2.datenschloss.png) | ![Rechnungsfenster](screenshots/4.rechnung.png) |
 
-| GoBD & Mahnwesen | Dashboard |
+| GoBD Rechnung | Dashboard & Mahnwesen |
 | :---: | :---: |
 | ![Storno-Tool](screenshots/7.rechnungstorno.png) | ![Dashboard](screenshots/9.dashboard.png) |
 | ![PDF Rechnung](screenshots/5.rechnungpdf.png) | ![Mahnwesen](screenshots/8.mahnwesen.png) |
