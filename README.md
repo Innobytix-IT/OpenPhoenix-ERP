@@ -12,7 +12,7 @@
 
 | GoBD  | Dashboard & Mahnwesen |
 | :---: | :---: |
-| ![Storno-Tool](screenshots/7.rechnungstorn.png) | ![Dashboard](screenshots/9.dashboard.png) |
+| ![Storno-Tool](screenshots/7.rechnungstorno.png) | ![Dashboard](screenshots/9.dashboard.png) |
 | ![PDF Rechnung](screenshots/5.rechnungpdf.png) | ![Mahnwesen](screenshots/8.mahnwesen.png) |
 
 
