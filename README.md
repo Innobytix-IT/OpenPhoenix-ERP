@@ -1,4 +1,4 @@
-# OpenPhoenix-ERP: Eine freie ERP-Suite für den Mittelstand
+# OpenPhoenix-ERP: Eine freie ERP-Suite für kleine Mittelständische Unternehmen. 
 
 **Eine quelloffene, modulare ERP-Lösung für kleine Unternehmen, Handwerker und Freiberufler – geboren aus der Überzeugung, dass professionelle Werkzeuge frei und zugänglich sein sollten.**
 
