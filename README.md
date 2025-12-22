@@ -88,4 +88,5 @@ Manuel Person
 
 ## 📜 Lizenz
 
-Dieses Projekt steht unter der **MIT-Lizenz**. Das bedeutet, du kannst damit fast alles machen, solange du meinen Namen als ursprünglichen Autor nennst. Lies die `LICENSE`-Datei für die Details.
+Dieses Projekt steht unter der **MIT-Lizenz**. Das bedeutet, du kannst damit im Grunde alles machen. Ich bitte lediglich darum meinen Namen als ursprünglichen Autor in der README zu nennen. 
+Lies die `LICENSE`-Datei für die Details.
