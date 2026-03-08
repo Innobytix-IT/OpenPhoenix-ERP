@@ -1,3 +1,5 @@
+#    OpenPhoenix ERP (v1) wird nicht weiter ausgebaut. Folgen Sie daher bitte v2: 
+
 # 🔥 OpenPhoenix ERP v2
 
 **Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
