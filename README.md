@@ -1,92 +1,102 @@
-# OpenPhoenix-ERP: Eine freie Einzelplatz ERP-Suite für kleine Mittelständische Unternehmen. 
+# 🔥 OpenPhoenix ERP v2
 
-**Eine quelloffene, modulare ERP-Lösung für kleine Unternehmen, Handwerker und Freiberufler – geboren aus der Überzeugung, dass professionelle Werkzeuge frei und zugänglich sein sollten.**
+**Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
 
-
-### Screenshot-Galerie
-
-| Launcher & Sicherheit | Kunden & Rechnungen |
-| :---: | :---: |
-| ![Launcher](screenshots/1.launcher.png) | ![Kundenverwaltung](screenshots/3.kunden.png) |
-| ![DatenSchloss](screenshots/2.datenschloss.png) | ![Rechnungsfenster](screenshots/4.rechnung.png) |
-
-| GoBD  | Dashboard & Mahnwesen |
-| :---: | :---: |
-| ![Storno-Tool](screenshots/7.rechnungstorno.png) | ![Dashboard](screenshots/9.dashboard.png) |
-| ![PDF Rechnung](screenshots/5.rechnungpdf.png) | ![Mahnwesen](screenshots/8.mahnwesen.png) |
-
-
+[![Lizenz: GPL v3](https://img.shields.io/badge/Lizenz-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-green.svg)](https://python.org)
+[![PySide6](https://img.shields.io/badge/UI-PySide6-orange.svg)](https://doc.qt.io/qtforpython/)
 
 ---
 
-## 🔥 Die Vision: "Einfach weil 'Einfach' einfach ist."
+## Was ist OpenPhoenix ERP?
 
-In einer Welt voller komplexer, teurer und restriktiver Unternehmenssoftware stellt sich dieses Projekt eine einfache Frage: Muss das so sein?
+OpenPhoenix ERP ist ein kostenloses, quelloffenes Desktop-ERP-System,
+das speziell für kleine und mittlere Unternehmen entwickelt wurde.
+Es ist GoBD-konform, mehrsprachig vorbereitet und läuft lokal auf Windows,
+Linux und macOS.
 
-Die Antwort ist ein klares Nein. OpenPhoenix-ERP ist meine Antwort auf diese Frage. Es ist kein Versuch, Giganten wie SAP zu kopieren. Es ist der Versuch, für die meisten kleineren Unternehmen eine einfache und vollwertige Lösung anzubieten. Es konzentriert sich auf die Kernfunktionen, die wirklich gebraucht werden, verpackt in einer sauberen, schnellen und lokalen Desktop-Anwendung. Keine Cloud-Abhängigkeit, keine monatlichen Gebühren, keine künstlichen Schranken.
+## Module
 
-OpenPhoenix-ERP ist ein lokales, modulares ERP-System, entstanden aus den praktischen Anforderungen des täglichen Bedarfs.
-Vielleicht hilft es jemandem.
+| Modul | Beschreibung |
+|---|---|
+| 👥 Kundenverwaltung | Kundenstamm, Dokumente, GoBD-konform |
+| 🧾 Rechnungen | Erstellen, Finalisieren, PDF-Export |
+| 📦 Lagerverwaltung | Artikelstamm, Bestandsführung |
+| 📨 Mahnwesen | Automatische Mahnstufenverwaltung |
+| 📊 Dashboard | Business Intelligence, Auswertungen |
+| 🖹 XRechnung | EN16931-konforme XML-Rechnungen |
+| ✏️ Rechnungskorrektur | GoBD-konformes Storno mit Gutschrift |
+| ⚙️ Einstellungen | Konfiguration, SMTP, Firmendaten |
 
-## ✨ Features im Überblick
+## Technologie
 
-OpenPhoenix-ERP ist eine modulare Einzelplatz-Suite. Jedes Tool ist eine eigenständige Anwendung, die sich auf eine Aufgabe konzentriert, aber alle arbeiten auf einer gemeinsamen, verschlüsselten und lokalen Datenbank.
+- **UI:** PySide6 (Qt6)
+- **Datenbank (Einzelplatz):** SQLite mit WAL-Modus
+- **Datenbank (Netzwerk):** PostgreSQL
+- **Abstraktion:** SQLAlchemy 2.0
+- **Migrationen:** Alembic
+- **Tests:** pytest
+- **Config:** TOML
 
-*   **Kundenverwaltung (CRM):** Vollständige Verwaltung von Kundendaten inklusive eines integrierten Dokumentenmanagements.
-*   **Rechnungswesen:** Erstellen und verwalten Sie Angebote, Rechnungen und Gutschriften.
-*   **Lagerverwaltung (Warenwirtschaft):** Behalten Sie den Überblick über Ihre Artikel und Bestände.
-*   **Automatisiertes Mahnwesen:** Ein intelligentes, mehrstufiges System zur Überwachung und Verwaltung offener Forderungen.
-*   **GoBD-fähig:** Entwickelt nach deutschen Grundsätzen der ordnungsmäßigen Buchführung (revisionssicheres Audit-Log, keine Löschung von Kerndaten, Finalisierung von Belegen).
-*   **XRechnung-Generator:** Erstellen Sie konforme elektronische Rechnungen für öffentliche Auftraggeber.
-*   **Business-Intelligence-Dashboard:** Verwandeln Sie Ihre Daten in verständliche KPIs und Grafiken, um Ihr Geschäft besser zu verstehen.
-*   **Sicherheit durch Design:** Eine zentrale, AES-verschlüsselte Datenbank dank des `DatenSchloss`-Moduls. Ihre Daten gehören Ihnen – und nur Ihnen.
-*   **Proaktiver `Bestandswächter`:** Ein stiller Helfer in der Taskleiste, der Sie warnt, bevor Lagerbestände kritisch werden.
-*   **Einheitlicher `Launcher`:** Ein sauberer, zentraler Startpunkt für alle Module der Suite.
+## Installation (Entwicklung)
 
-## 🛠️ Augmented Engineering: Die Entstehungsgeschichte des Architekten, nicht des Programmierers
+```bash
+# Repository klonen
+git clone https://github.com/IhrName/openphoenix-erp.git
+cd openphoenix-erp
 
-Dieses Projekt wurde nicht in einem Konferenzraum geboren, sondern zuhause auf meinem Esstisch. Es begann mit einer Vision: Software zu schaffen, die dient, anstatt zu beschränken.
+# Virtuelle Umgebung erstellen
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-Mein Weg ist nicht der eines klassischen Entwicklers. Ich komme ursprünglich aus dem IT-Support, angetrieben von der Freude am Lösen von Problemen. Dieses gesamte, komplexe System wurde nicht Zeile für Zeile von mir in mühevoller Kleinarbeit Kommando für Kommando zusammengesucht und getippt. Stattdessen konnte ich durch die so freigewordenen Ressourcen die Rolle als kreativer Denker und Architekt einnehmen. Moderne KI-Werkzeuge waren dabei meine unermüdlichen "Junior-Programmierer", die meine Visionen, meine Architektur, die Designs und meine unzähligen Korrekturen in funktionierenden Code umgesetzt haben.
+# Abhängigkeiten installieren
+pip install -e ".[dev]"
 
-Dieses Projekt soll als der lebende Beweis dienen, dass die Zukunft der Softwareentwicklung nicht mehr nur im Tippen von Codezeilen liegt, sondern in der Vision selbst, im Design, im Testen und in der Fähigkeit, moderne KI-Werkzeuge zu dirigieren.
+# Anwendung starten
+python main.py
+```
 
-## 🚀 Erste Schritte (Installation)
+## Tests ausführen
 
-Dieses Projekt ist eine Desktop-Anwendung für Windows.
+```bash
+pytest tests/ -v --cov=core
+```
 
-1.  **Repository herunterladen:**
-    Laden Sie dieses Repository als ZIP-Datei herunter und entpacken Sie es.
+## Datenbankmodul wechseln
 
-2.  **Abhängigkeiten installieren:**
-    Stellen Sie sicher, dass Sie Python auf Ihrem System installiert haben. Öffnen Sie eine Kommandozeile (`cmd`) im Projektordner und führen Sie aus:
-    
-    ```
-    pip install -r requirements.txt
-    ```
+In `config.toml`:
 
-3.  **Starten:**
-    Starten Sie die Suite über den Launcher. Ein Doppelklick auf die `Launcher.pyw`-Datei genügt.
+```toml
+# Einzelplatz
+[database]
+mode = "local"
+path = "openphoenix.db"
 
-## 🤝 Wie du mitwirken kannst
+# Netzwerk / KMU
+[database]
+mode = "server"
+host = "192.168.1.10"
+port = 5432
+name = "openphoenix"
+user = "erp_user"
+```
 
-Dieses Projekt ist ein klassisches Open-Source-Geschenk. Und jedes Open-Source-Geschenk wird wertvoller, wenn es geteilt und gemeinsam weiterentwickelt wird. Zusammen schaffen wir alles!
+## Lizenz
 
-*   **Fehler gefunden?** Bitte erstelle ein "Issue" – du hilfst uns allen damit.
-*   **Eine Idee für ein neues Feature?** (DATEV-Export, Angebots-Modul...) Lass uns im "Discussions"-Tab darüber reden!
-*   **Du willst Code beisteuern?** Fantastisch! Erstelle einen "Pull Request". Jede Hilfe ist willkommen.
+OpenPhoenix ERP ist freie Software, lizenziert unter der
+**GNU General Public License v3 (GPL-3.0)**.
 
-## 🙏 Danksagung & Projektphilosophie
+Das bedeutet: Du darfst die Software frei nutzen, kopieren, verändern
+und weitergeben — solange du Änderungen ebenfalls unter GPL v3
+veröffentlichst.
 
-Dieses Projekt ist das Ergebnis einer Vision, die durch den Einsatz moderner KI-Werkzeuge Wirklichkeit werden konnte. Es ist ein Beispiel für Selbstverwirklichung und den Wunsch, nützliche und freie Software für alle zugänglich zu machen.
+Siehe [LICENSE](LICENSE) für den vollständigen Lizenztext.
 
-Mein aufrichtiger Dank gilt den Entwicklern und Forschern, deren Arbeit diese Werkzeuge ermöglicht hat. In diesem Projekt fungierten sie als unermüdliche digitale Assistenten, die den Code schrieben, während die Vision, die Architektur und die Leitung des Projekts in meiner Verantwortung lagen. Gott sei Dank konnte ich dadurch meine persönlichen Ressourcen hauptsächlich auf Design- und Architekturfragen, die Funktionsweisen und den Inhalt der Software konzentrieren, anstatt mühevoll Codezeile für Codezeile selbst zu schreiben.
+## Mitmachen
 
-Ich bin zutiefst dankbar für die Möglichkeit, meine Ideen auf diese Weise umsetzen und teilen zu dürfen. Dieses Projekt soll ein demütiger Beweis dafür sein, wie Leidenschaft und moderne KI-Technologie zusammenkommen können, um nützliche und offene Alternativen zu schaffen. Durch den Launcher und den modularen Aufbau wurde die Suite von Anfang an so konzipiert, dass Erweiterungen und Ergänzungen jederzeit möglich sind. Jeder, der möchte, ist herzlich eingeladen, seine eigenen Ideen und Visionen mit einzubringen und umzusetzen.
+Pull Requests und Issues sind willkommen.
+Bitte lies `CONTRIBUTING.md` bevor du einen Beitrag einreichst.
 
-Manuel Person
+---
 
-## 📜 Lizenz
-
-Dieses Projekt steht unter der **MIT-Lizenz**. Das bedeutet, du kannst damit im Grunde alles machen. Ich bitte lediglich darum meinen Namen als ursprünglichen Autor in der README zu nennen. 
-Lies die `LICENSE`-Datei für die Details.
+*OpenPhoenix ERP – Die Welt verdient vernünftige Software.*
