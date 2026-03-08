@@ -41,18 +41,25 @@ Linux und macOS.
 ## Installation (Entwicklung)
 
 ```bash
-# Repository klonen
-git clone https://github.com/Innobytix-IT/OpenPhoenix-ERP/tree/main/OpenPhoenixERP_V2.git
-cd openphoenix-erp
+# 1. Repository klonen 
+git clone https://github.com/Innobytix-IT/OpenPhoenix-ERP.git
+cd OpenPhoenix-ERP/OpenPhoenixERP_V2
 
-# Virtuelle Umgebung erstellen
+# 2. Virtuelle Umgebung erstellen
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-# Abhängigkeiten installieren
-pip install -e ".[dev]"
+# 3. Umgebung aktivieren
+# Unter Windows:
+.venv\Scripts\activate
+# Unter Linux/macOS:
+source .venv/bin/activate
 
-# Anwendung starten
+# 4. Abhängigkeiten installieren
+# Der Punkt "." bezieht sich auf das aktuelle Verzeichnis, 
+# sofern dort eine pyproject.toml liegt.
+pip install -e .[dev]
+
+# 5. Anwendung starten
 python main.py
 ```
 
