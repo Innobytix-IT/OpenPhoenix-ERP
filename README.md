@@ -42,7 +42,7 @@ Linux und macOS.
 
 ```bash
 # Repository klonen
-git clone https://github.com/IhrName/openphoenix-erp.git
+git clone https://github.com/Innobytix-IT/OpenPhoenix-ERP/tree/main/OpenPhoenixERP_V2.git
 cd openphoenix-erp
 
 # Virtuelle Umgebung erstellen
