@@ -195,4 +195,4 @@ Bitte lies `CONTRIBUTING.md` bevor du einen Beitrag einreichst.
 
 ---
 
-*OpenPhoenix ERP – Die Welt verdient vernünftige Software.*
+*OpenPhoenix ERP – Einfach weil "Einfach" einfach ist.*
