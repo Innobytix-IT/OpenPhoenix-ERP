@@ -1,0 +1,138 @@
+2026-03-23 21:40:23,753 | INFO     | openphoenix | ============================================================
+2026-03-23 21:40:23,753 | INFO     | openphoenix | OpenPhoenix ERP v3.0.0 startet...
+2026-03-23 21:40:23,753 | INFO     | openphoenix | ============================================================
+2026-03-23 21:40:24,413 | WARNING  | core.config | Unbekannter Config-Schlüssel: [company].leitweg_id
+2026-03-23 21:40:24,413 | INFO     | core.config | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:40:24,430 | INFO     | openphoenix | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:40:24,430 | INFO     | openphoenix | Datenbankmodus: local
+2026-03-23 21:40:29,213 | INFO     | core.db.engine | SQLite-Engine erstellt (WAL-Modus): sqlite:///C:/Users/manue/Downloads/OpenPhoenix-ERP-main (1)/OpenPhoenix-ERP-main/OpenPhoenixERP_V2/openphoenix.db
+2026-03-23 21:40:29,213 | INFO     | core.db.engine | Datenbank-Manager initialisiert.
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE rechnungen ADD COLUMN storno_zu_nr VARCHAR(50)…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN anrede VARCHAR(20)…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS kunden_notizen (
+                …
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN geaendert_am DATETIME…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS eingangsrechnungen (
+            …
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_datum ON ei…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_kategorie O…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_zahlungssta…
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration übersprungen: rechnungsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:40:29,340 | DEBUG    | core.db.engine | Migration übersprungen: angebotsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:40:29,340 | INFO     | core.db.engine | Alle Datenbanktabellen sichergestellt.
+2026-03-23 21:40:29,340 | INFO     | openphoenix | Datenbank bereit.
+2026-03-23 21:40:29,404 | DEBUG    | core.audit.service | AUDIT | action='APP_START' | table='None' | record_id=None | user='manue'
+2026-03-23 21:40:30,366 | INFO     | core.db.engine | Datenbankverbindungen geschlossen.
+2026-03-23 21:40:30,366 | INFO     | ui.main_window | Anwendung beendet.
+2026-03-23 21:40:30,397 | DEBUG    | core.audit.service | AUDIT | action='APP_END' | table='None' | record_id=None | user='manue'
+2026-03-23 21:40:30,443 | INFO     | openphoenix | OpenPhoenix ERP beendet (Exit-Code: 0).
+2026-03-23 21:40:37,522 | DEBUG    | keyring.backend | Loading KWallet
+2026-03-23 21:40:37,552 | DEBUG    | keyring.backend | Loading SecretService
+2026-03-23 21:40:37,552 | DEBUG    | keyring.backend | Loading Windows
+2026-03-23 21:40:37,584 | DEBUG    | win32ctypes.core.cffi | Loaded cffi backend
+2026-03-23 21:40:37,919 | DEBUG    | keyring.backend | Loading chainer
+2026-03-23 21:40:37,919 | DEBUG    | keyring.backend | Loading libsecret
+2026-03-23 21:40:37,919 | DEBUG    | keyring.backend | Loading macOS
+2026-03-23 21:40:38,630 | INFO     | openphoenix | Hauptfenster geöffnet. Anwendung läuft.
+2026-03-23 21:40:48,013 | INFO     | core.config | Konfiguration gespeichert: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:40:53,627 | DEBUG    | ui.main_window | Modul gewechselt: einstellungen
+2026-03-23 21:41:16,266 | INFO     | core.services.credential_service | SMTP-Passwort im OS-Schlüsselbund gespeichert.
+2026-03-23 21:41:16,266 | INFO     | core.config | Konfiguration gespeichert: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:41:16,282 | INFO     | ui.modules.einstellungen.panel | Einstellungen gespeichert.
+2026-03-23 21:43:37,139 | DEBUG    | ui.main_window | Modul gewechselt: kunden
+2026-03-23 21:43:37,906 | DEBUG    | ui.main_window | Modul gewechselt: rechnungen
+2026-03-23 21:43:39,800 | DEBUG    | ui.main_window | Modul gewechselt: einstellungen
+2026-03-23 21:43:42,124 | INFO     | core.db.engine | Datenbankverbindungen geschlossen.
+2026-03-23 21:43:42,124 | INFO     | ui.main_window | Anwendung beendet.
+2026-03-23 21:43:42,140 | DEBUG    | core.audit.service | AUDIT | action='APP_END' | table='None' | record_id=None | user='manue'
+2026-03-23 21:43:42,140 | INFO     | openphoenix | OpenPhoenix ERP beendet (Exit-Code: 0).
+2026-03-23 21:43:51,807 | INFO     | openphoenix | ============================================================
+2026-03-23 21:43:51,807 | INFO     | openphoenix | OpenPhoenix ERP v3.0.0 startet...
+2026-03-23 21:43:51,807 | INFO     | openphoenix | ============================================================
+2026-03-23 21:43:51,866 | WARNING  | core.config | Unbekannter Config-Schlüssel: [company].leitweg_id
+2026-03-23 21:43:51,866 | INFO     | core.config | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:43:51,876 | INFO     | openphoenix | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:43:51,876 | INFO     | openphoenix | Datenbankmodus: local
+2026-03-23 21:43:52,335 | INFO     | core.db.engine | SQLite-Engine erstellt (WAL-Modus): sqlite:///C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\openphoenix.db
+2026-03-23 21:43:52,335 | INFO     | core.db.engine | Datenbank-Manager initialisiert.
+2026-03-23 21:43:52,399 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE rechnungen ADD COLUMN storno_zu_nr VARCHAR(50)…
+2026-03-23 21:43:52,399 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN anrede VARCHAR(20)…
+2026-03-23 21:43:52,399 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS kunden_notizen (
+                …
+2026-03-23 21:43:52,399 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN geaendert_am DATETIME…
+2026-03-23 21:43:52,401 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS eingangsrechnungen (
+            …
+2026-03-23 21:43:52,401 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_datum ON ei…
+2026-03-23 21:43:52,401 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_kategorie O…
+2026-03-23 21:43:52,401 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_zahlungssta…
+2026-03-23 21:43:52,401 | DEBUG    | core.db.engine | Migration übersprungen: rechnungsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:43:52,403 | DEBUG    | core.db.engine | Migration übersprungen: angebotsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:43:52,403 | INFO     | core.db.engine | Alle Datenbanktabellen sichergestellt.
+2026-03-23 21:43:52,403 | INFO     | openphoenix | Datenbank bereit.
+2026-03-23 21:43:52,419 | DEBUG    | core.audit.service | AUDIT | action='APP_START' | table='None' | record_id=None | user='manue'
+2026-03-23 21:43:53,473 | DEBUG    | keyring.backend | Loading KWallet
+2026-03-23 21:43:53,476 | DEBUG    | keyring.backend | Loading SecretService
+2026-03-23 21:43:53,478 | DEBUG    | keyring.backend | Loading Windows
+2026-03-23 21:43:53,481 | DEBUG    | win32ctypes.core.cffi | Loaded cffi backend
+2026-03-23 21:43:53,529 | DEBUG    | keyring.backend | Loading chainer
+2026-03-23 21:43:53,529 | DEBUG    | keyring.backend | Loading libsecret
+2026-03-23 21:43:53,535 | DEBUG    | keyring.backend | Loading macOS
+2026-03-23 21:43:54,047 | INFO     | openphoenix | Hauptfenster geöffnet. Anwendung läuft.
+2026-03-23 21:43:56,161 | DEBUG    | ui.main_window | Modul gewechselt: einstellungen
+2026-03-23 21:44:14,305 | DEBUG    | ui.main_window | Modul gewechselt: kunden
+2026-03-23 21:45:29,874 | INFO     | core.db.engine | Datenbankverbindungen geschlossen.
+2026-03-23 21:45:29,874 | INFO     | ui.main_window | Anwendung beendet.
+2026-03-23 21:45:29,897 | DEBUG    | core.audit.service | AUDIT | action='APP_END' | table='None' | record_id=None | user='manue'
+2026-03-23 21:45:29,911 | INFO     | openphoenix | OpenPhoenix ERP beendet (Exit-Code: 0).
+2026-03-23 21:45:37,639 | INFO     | openphoenix | ============================================================
+2026-03-23 21:45:37,646 | INFO     | openphoenix | OpenPhoenix ERP v3.0.0 startet...
+2026-03-23 21:45:37,652 | INFO     | openphoenix | ============================================================
+2026-03-23 21:45:37,718 | WARNING  | core.config | Unbekannter Config-Schlüssel: [company].leitweg_id
+2026-03-23 21:45:37,718 | INFO     | core.config | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:45:37,718 | INFO     | openphoenix | Konfiguration geladen: C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\config.toml
+2026-03-23 21:45:37,718 | INFO     | openphoenix | Datenbankmodus: local
+2026-03-23 21:45:38,217 | INFO     | core.db.engine | SQLite-Engine erstellt (WAL-Modus): sqlite:///C:\Users\manue\Downloads\OpenPhoenix-ERP-main (1)\OpenPhoenix-ERP-main\OpenPhoenixERP_V2\openphoenix.db
+2026-03-23 21:45:38,217 | INFO     | core.db.engine | Datenbank-Manager initialisiert.
+2026-03-23 21:45:38,284 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE rechnungen ADD COLUMN storno_zu_nr VARCHAR(50)…
+2026-03-23 21:45:38,284 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN anrede VARCHAR(20)…
+2026-03-23 21:45:38,284 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS kunden_notizen (
+                …
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration übersprungen (existiert): ALTER TABLE kunden ADD COLUMN geaendert_am DATETIME…
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE TABLE IF NOT EXISTS eingangsrechnungen (
+            …
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_datum ON ei…
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_kategorie O…
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration ausgeführt: CREATE INDEX IF NOT EXISTS ix_eingangsrechnungen_zahlungssta…
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration übersprungen: rechnungsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:45:38,287 | DEBUG    | core.db.engine | Migration übersprungen: angebotsposten.artikelnummer hat keinen FK mehr.
+2026-03-23 21:45:38,287 | INFO     | core.db.engine | Alle Datenbanktabellen sichergestellt.
+2026-03-23 21:45:38,287 | INFO     | openphoenix | Datenbank bereit.
+2026-03-23 21:45:38,300 | DEBUG    | core.audit.service | AUDIT | action='APP_START' | table='None' | record_id=None | user='manue'
+2026-03-23 21:45:39,277 | DEBUG    | keyring.backend | Loading KWallet
+2026-03-23 21:45:39,280 | DEBUG    | keyring.backend | Loading SecretService
+2026-03-23 21:45:39,282 | DEBUG    | keyring.backend | Loading Windows
+2026-03-23 21:45:39,286 | DEBUG    | win32ctypes.core.cffi | Loaded cffi backend
+2026-03-23 21:45:39,335 | DEBUG    | keyring.backend | Loading chainer
+2026-03-23 21:45:39,335 | DEBUG    | keyring.backend | Loading libsecret
+2026-03-23 21:45:39,335 | DEBUG    | keyring.backend | Loading macOS
+2026-03-23 21:45:39,862 | INFO     | openphoenix | Hauptfenster geöffnet. Anwendung läuft.
+2026-03-23 21:45:44,177 | DEBUG    | ui.main_window | Modul gewechselt: kunden
+2026-03-23 21:45:45,424 | DEBUG    | ui.main_window | Modul gewechselt: angebote
+2026-03-23 21:45:46,509 | DEBUG    | ui.main_window | Modul gewechselt: rechnungen
+2026-03-23 21:45:47,147 | DEBUG    | ui.main_window | Modul gewechselt: lager
+2026-03-23 21:45:47,835 | DEBUG    | ui.main_window | Modul gewechselt: belege
+2026-03-23 21:45:48,713 | DEBUG    | ui.main_window | Modul gewechselt: xrechnung
+2026-03-23 21:45:49,404 | DEBUG    | ui.main_window | Modul gewechselt: korrektur
+2026-03-23 21:45:50,245 | DEBUG    | ui.main_window | Modul gewechselt: datev
+2026-03-23 21:45:51,207 | DEBUG    | ui.main_window | Modul gewechselt: einstellungen
+2026-03-23 21:46:09,514 | DEBUG    | ui.main_window | Modul gewechselt: kunden
+2026-03-23 21:46:18,405 | DEBUG    | ui.main_window | Modul gewechselt: angebote
+2026-03-23 21:46:18,962 | DEBUG    | ui.main_window | Modul gewechselt: rechnungen
+2026-03-23 21:46:19,862 | DEBUG    | ui.main_window | Modul gewechselt: lager
+2026-03-23 21:46:21,876 | DEBUG    | ui.main_window | Modul gewechselt: belege
+2026-03-23 21:46:23,898 | DEBUG    | ui.main_window | Modul gewechselt: dashboard
+2026-03-23 21:46:28,030 | DEBUG    | ui.main_window | Modul gewechselt: xrechnung
+2026-03-23 21:46:29,798 | INFO     | core.db.engine | Datenbankverbindungen geschlossen.
+2026-03-23 21:46:29,798 | INFO     | ui.main_window | Anwendung beendet.
+2026-03-23 21:46:29,823 | DEBUG    | core.audit.service | AUDIT | action='APP_END' | table='None' | record_id=None | user='manue'
+2026-03-23 21:46:29,832 | INFO     | openphoenix | OpenPhoenix ERP beendet (Exit-Code: 0).

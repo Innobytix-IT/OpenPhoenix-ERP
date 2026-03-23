@@ -1,0 +1,21 @@
+{
+  "email_mahnung_betreff": "{{MAHNSTUFE}} zu Rechnung Nr. {{RECHNUNGSNUMMER}}",
+  "email_mahnung_text": "{{BRIEFANREDE}}\n\nanbei erhalten Sie unsere {{MAHNSTUFE}} zur Rechnung Nr. {{RECHNUNGSNUMMER}}.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "email_rechnung_betreff": "Rechnung Nr. {{RECHNUNGSNUMMER}} von {{EIGENE_FIRMA_NAME}}",
+  "email_rechnung_text": "{{BRIEFANREDE}}\n\nanbei erhalten Sie unsere Rechnung Nr. {{RECHNUNGSNUMMER}} vom {{RECHNUNGSDATUM}} über {{BETRAG_BRUTTO}}.\n\nBitte überweisen Sie den Betrag bis zum {{FAELLIGKEITSDATUM}}.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "email_standard_betreff": "Dokument: {{DATEINAME}}",
+  "email_standard_text": "Sehr geehrte Damen und Herren,\n\nanbei erhalten Sie das Dokument '{{DATEINAME}}'.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "mahnung_1_schluss": "Wir fordern Sie auf, den Gesamtbetrag von {{BETRAG_GESAMT_MAHNUNG}} bis zum {{DATUM_IN_7_TAGEN}} zu überweisen.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "mahnung_1_text": "{{BRIEFANREDE}}\n\ntrotz unserer Zahlungserinnerung konnten wir für Ihre Rechnung Nr. {{RECHNUNGSNUMMER}} vom {{RECHNUNGSDATUM}} über {{BETRAG_BRUTTO}} leider noch keinen Zahlungseingang verzeichnen.\n\nFür den hierdurch entstandenen Aufwand berechnen wir Ihnen eine Mahngebühr von {{MAHNKOSTEN}}.",
+  "mahnung_1_titel": "1. Mahnung zu Rechnung Nr. {{RECHNUNGSNUMMER}}",
+  "mahnung_2_schluss": "Überweisen Sie den Gesamtbetrag von {{BETRAG_GESAMT_MAHNUNG}} bis spätestens {{DATUM_IN_5_TAGEN}}.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "mahnung_2_text": "{{BRIEFANREDE}}\n\ntrotz unserer 1. Mahnung steht die Zahlung der Rechnung Nr. {{RECHNUNGSNUMMER}} vom {{RECHNUNGSDATUM}} über {{BETRAG_BRUTTO}} noch immer aus.\n\nWir fordern Sie hiermit letztmalig auf, den Betrag unverzüglich zu überweisen, um weitere Maßnahmen zu vermeiden.",
+  "mahnung_2_titel": "2. Mahnung zu Rechnung Nr. {{RECHNUNGSNUMMER}}",
+  "mahnung_erinnerung_schluss": "Bitte überweisen Sie den offenen Betrag von {{BETRAG_OFFEN}} bis zum {{DATUM_ZAHLUNGSZIEL}} auf unser Konto.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "mahnung_erinnerung_text": "{{BRIEFANREDE}}\n\nwir erlauben uns, Sie freundlich daran zu erinnern, dass die Rechnung Nr. {{RECHNUNGSNUMMER}} vom {{RECHNUNGSDATUM}} über {{BETRAG_BRUTTO}} noch nicht beglichen wurde. Das Zahlungsziel war der {{FAELLIGKEITSDATUM}}.\n\nSollte sich Ihre Zahlung mit diesem Schreiben gekreuzt haben, betrachten Sie diese Erinnerung bitte als gegenstandslos.",
+  "mahnung_erinnerung_titel": "Zahlungserinnerung zu Rechnung Nr. {{RECHNUNGSNUMMER}}",
+  "mahnung_inkasso_schluss": "Letzte Zahlungsmöglichkeit bis zum {{DATUM_IN_5_TAGEN}}.\n\nMit freundlichen Grüßen\n{{EIGENE_FIRMA_NAME}}",
+  "mahnung_inkasso_text": "{{BRIEFANREDE}}\n\nda Sie trotz mehrfacher Aufforderung die Rechnung Nr. {{RECHNUNGSNUMMER}} vom {{RECHNUNGSDATUM}} über {{BETRAG_BRUTTO}} nicht beglichen haben, sehen wir uns gezwungen, diese Forderung an ein Inkassounternehmen zu übergeben, sofern kein Zahlungseingang bis zum angegebenen Datum erfolgt.\n\nDie dadurch entstehenden Kosten gehen zu Ihren Lasten.",
+  "mahnung_inkasso_titel": "Letzte Mahnung / Inkasso-Ankündigung zu Rechnung Nr. {{RECHNUNGSNUMMER}}",
+  "rechnung_hinweis": "Bitte überweisen Sie den Gesamtbetrag von <b>{{BETRAG_BRUTTO}}</b> bis zum <b>{{FAELLIGKEITSDATUM}}</b> unter Angabe der Rechnungsnummer auf unser Konto."
+}

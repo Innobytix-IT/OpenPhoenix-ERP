@@ -1,0 +1,54 @@
+
+[app]
+language = "de"
+theme = "light"
+version = "3.0.0"
+
+[database]
+mode = "local"
+path = "openphoenix.db"
+host = "localhost"
+port = 5432
+name = "openphoenix"
+user = "erp_user"
+
+[company]
+name = ""
+address = ""
+zip = ""
+city = ""
+zip_city = ""
+phone = ""
+email = ""
+tax_id = ""
+bank_details = ""
+leitweg_id = ""
+
+[invoice]
+default_vat = 19.0
+reduced_vat = 7.0
+payment_days = 14
+number_format = "{year}-{number:04d}"
+
+[dunning]
+reminder_days = 7
+mahnung1_days = 21
+mahnung2_days = 35
+inkasso_days = 49
+cost_erinnerung = 0.0
+cost_mahnung1 = 5.0
+cost_mahnung2 = 10.0
+cost_inkasso = 25.0
+
+[smtp]
+server = ""
+port = 587
+user = ""
+password = ""
+encryption = "STARTTLS"
+
+[paths]
+documents = ""
+pdf_background = ""
+xrechnung_output = ""
+belege = ""
