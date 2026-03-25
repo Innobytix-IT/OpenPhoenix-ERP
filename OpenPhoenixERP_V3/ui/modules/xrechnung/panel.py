@@ -534,12 +534,11 @@ class XRechnungPanel(QWidget):
                     full_dto, session,
                     leitweg_id=self.f_leitweg.value().strip(),
                 )
-                # Pflichtfelder validieren BEVOR XML erzeugt wird
-                validierung = xrechnung_service._validiere_pflichtfelder(xdaten)
-                if validierung:
-                    self._banner.show_error(validierung)
+                # Pflichtfelder validieren + XML erzeugen (öffentliche API)
+                xml_bytes, fehler = xrechnung_service.xml_bytes_validiert(xdaten)
+                if fehler:
+                    self._banner.show_error(fehler)
                     return
-                xml_bytes = xrechnung_service._xml_erstellen(xdaten)
                 # XML-Vorschau aktualisieren
                 xml_str = xml_bytes.decode("utf-8")
                 self._xml_vorschau.setPlainText(xml_str)

@@ -197,7 +197,7 @@ class KundenService:
             session.query(Rechnung)
             .filter(
                 Rechnung.kunde_id == kunde_id,
-                Rechnung.status.notin_(["Bezahlt", "Storniert"]),
+                Rechnung.status.notin_(["Bezahlt", "Storniert", "Gutschrift"]),
             )
             .count()
         )

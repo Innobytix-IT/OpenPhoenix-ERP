@@ -35,6 +35,7 @@ def verkäufer():
         steuernummer="",
         ust_id="DE123456789",
         email="info@muster.de",
+        telefon="+49 30 123456",
         bank_iban="DE89370400440532013000",
         bank_bic="COBADEFFXXX",
     )

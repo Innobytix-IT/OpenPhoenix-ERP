@@ -377,6 +377,19 @@ class XRechnungService:
             raise ValueError(fehler)
         return self._xml_erstellen(daten).decode("utf-8")
 
+    def xml_bytes_validiert(self, daten: XRechnungDaten) -> tuple[bytes | None, str]:
+        """
+        Validiert Pflichtfelder und gibt XML als Bytes zurück.
+
+        Returns:
+            (xml_bytes, fehler) – xml_bytes ist None wenn fehler nicht leer.
+            Öffentliche API für UI-Aufrufe (statt _validiere/_xml direkt).
+        """
+        fehler = self._validiere_pflichtfelder(daten)
+        if fehler:
+            return None, fehler
+        return self._xml_erstellen(daten), ""
+
     # ------------------------------------------------------------------
     # XML-Erstellung
     # ------------------------------------------------------------------

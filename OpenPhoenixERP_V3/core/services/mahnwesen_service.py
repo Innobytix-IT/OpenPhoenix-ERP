@@ -279,6 +279,9 @@ class MahnwesenService:
                 uebersicht.inkasso.append(dto)
 
         # Rechnungen die bald fällig werden (nächste 7 Tage)
+        # Hinweis: Datumsfilter in Python nötig, da faelligkeitsdatum als String
+        # in gemischten Formaten (TT.MM.JJJJ / JJJJ-MM-TT) vorliegt.
+        # SQL-String-Vergleich wäre bei gemischten Formaten unzuverlässig.
         bald = date.today() + timedelta(days=7)
         bald_rechnungen = (
             session.query(Rechnung)

@@ -736,12 +736,11 @@ class RechnungenPanel(QWidget):
                     )
                     return
                 xdaten = xrechnung_service.xrechnung_daten_aus_dto(full_dto, session)
-                # Pflichtfelder validieren BEVOR XML erzeugt wird
-                validierung = xrechnung_service._validiere_pflichtfelder(xdaten)
-                if validierung:
-                    self._banner.show_error(validierung)
+                # Pflichtfelder validieren + XML erzeugen (öffentliche API)
+                xml_bytes, fehler = xrechnung_service.xml_bytes_validiert(xdaten)
+                if fehler:
+                    self._banner.show_error(fehler)
                     return
-                xml_bytes = xrechnung_service._xml_erstellen(xdaten)
                 safe_nr = full_dto.rechnungsnummer.replace("/", "-").replace("\\", "-")
                 dateiname = f"XRechnung_{safe_nr}.xml"
                 ziel = kunden_service.dokument_in_kundenordner_erstellen(

@@ -36,27 +36,34 @@ def _make_dto(
     summe_netto=Decimal("100.00"),
     summe_mwst=Decimal("19.00"),
     summe_brutto=Decimal("119.00"),
+    offener_betrag=Decimal("119.00"),
     mahngebuehren=Decimal("0"),
     bemerkung="",
+    status="Offen",
     anzahl_posten=2,
 ):
     """Erstellt ein Mock-RechnungDTO für Tests."""
-    dto = MagicMock()
+    dto = MagicMock(spec=[])  # spec=[] verhindert auto-Attribute
     dto.rechnungsnummer = rechnungsnummer
     dto.rechnungsdatum = rechnungsdatum
     dto.faelligkeitsdatum = faelligkeitsdatum
     dto.kunde_display = kunde_display
     dto.kunde_zifferncode = kunde_zifferncode
+    dto.kunde_id = 1
     dto.mwst_prozent = mwst_prozent
     dto.summe_netto = summe_netto
     dto.summe_mwst = summe_mwst
     dto.summe_brutto = summe_brutto
+    dto.offener_betrag = offener_betrag
     dto.mahngebuehren = mahngebuehren
     dto.bemerkung = bemerkung
+    dto.status = status
+    dto.storno_zu_nr = None
+    dto.is_finalized = True
 
     posten = []
     for i in range(anzahl_posten):
-        p = MagicMock()
+        p = MagicMock(spec=[])
         p.position = i + 1
         p.artikelnummer = f"ART-{i+1:03d}"
         p.beschreibung = f"Testposition {i+1}"

@@ -1112,7 +1112,7 @@ class RechnungsService:
                 )
                 session.add(gp)
 
-                # 5. Lager zurückbuchen
+                # 5. Lager zurückbuchen (mit Bestandsvalidierung)
                 if p.artikelnummer:
                     artikel = (
                         session.query(Artikel)
@@ -1123,16 +1123,28 @@ class RechnungsService:
                     if artikel:
                         bestand_vor = Decimal(str(artikel.verfuegbar))
                         rueck_menge = Decimal(str(p.menge))
-                        artikel.verfuegbar = bestand_vor + rueck_menge
+                        bestand_nach = bestand_vor + rueck_menge
+                        if bestand_nach < Decimal("0"):
+                            logger.warning(
+                                f"Storno-Rückbuchung für Artikel '{p.artikelnummer}' "
+                                f"ergibt negativen Bestand ({bestand_nach}). "
+                                f"Buchung wird trotzdem durchgeführt."
+                            )
+                        artikel.verfuegbar = bestand_nach
                         session.add(LagerBewegung(
                             artikelnummer=p.artikelnummer,
                             buchungsart="Stornoeingang",
                             menge=rueck_menge,
                             bestand_vor=bestand_vor,
-                            bestand_nach=artikel.verfuegbar,
+                            bestand_nach=bestand_nach,
                             referenz=storno_nummer,
                             notiz=f"Storno-Rückbuchung zu Rechnung {original_nummer}, Pos. {p.position}",
                         ))
+                    else:
+                        logger.warning(
+                            f"Artikel '{p.artikelnummer}' nicht mehr im Lager vorhanden. "
+                            f"Storno-Rückbuchung für Pos. {p.position} übersprungen."
+                        )
 
             audit.log(
                 session, AuditAction.RECHNUNG_STORNIERT,

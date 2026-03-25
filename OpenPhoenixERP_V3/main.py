@@ -1,5 +1,5 @@
 """
-main.py – Einstiegspunkt für OpenPhoenix ERP v2
+main.py – Einstiegspunkt für OpenPhoenix ERP v3
 ================================================
 Startet die Anwendung, initialisiert Datenbank und UI.
 """

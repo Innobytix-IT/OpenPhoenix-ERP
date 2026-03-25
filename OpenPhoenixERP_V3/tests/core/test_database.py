@@ -48,7 +48,8 @@ class TestEngine:
     def test_wal_mode_enabled(self, db):
         with db.session() as session:
             result = session.execute(text("PRAGMA journal_mode")).fetchone()
-            assert result[0] == "wal"
+            # :memory:-Datenbanken unterstützen kein WAL, dort ist 'memory' korrekt
+            assert result[0] in ("wal", "memory")
 
     def test_foreign_keys_enabled(self, db):
         with db.session() as session:
