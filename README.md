@@ -1,11 +1,12 @@
-# 🔥 OpenPhoenix ERP v2
+# 🔥 OpenPhoenix ERP v3
 
 **Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
 
 [![Lizenz: GPL v3](https://img.shields.io/badge/Lizenz-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-green.svg)](https://python.org)
 [![PySide6](https://img.shields.io/badge/UI-PySide6-orange.svg)](https://doc.qt.io/qtforpython/)
-[![Version](https://img.shields.io/badge/Version-2.0.0-brightgreen.svg)](https://github.com/Innobytix-IT/OpenPhoenix-ERP/releases/tag/v2.0.0)
+[![Version](https://img.shields.io/badge/Version-3.0.0-brightgreen.svg)](https://github.com/Innobytix-IT/OpenPhoenix-ERP/releases/tag/v3.0.0)
+[![Tests](https://img.shields.io/badge/Tests-212%20passed-success.svg)]()
 
 ---
 
@@ -16,18 +17,28 @@ das speziell für kleine und mittlere Unternehmen entwickelt wurde.
 Es ist GoBD-konform, mehrsprachig vorbereitet und läuft lokal auf Windows,
 Linux und macOS – vollständig offline, ohne Cloud-Zwang.
 
+### Neu in v3.0.0
+
+- **Rechnungskorrektur** – GoBD-konforme Teilgutschriften, Stornos und Korrekturbuchungen
+- **Zahlungseingänge** – Teilzahlungen direkt im Korrektur-Modul buchen
+- **Skonto & Rabatt** – Nachträgliche Skonto-Gewährung auf finalisierte Rechnungen
+- **Angebotswesen** – Angebote erstellen, verwalten und in Rechnungen überführen
+- **Eingangsrechnungen** – Belege erfassen und Zahlungsstatus verfolgen
+- **DATEV-Export** – Buchungsdaten für den Steuerberater exportieren
+- **Erweiterte Tests** – 212 automatisierte Tests für alle kritischen Geschäftspfade
+
 ---
 
 ## ⚡ Schnellinstallation (Linux / macOS)
 
 ```bash
 git clone https://github.com/Innobytix-IT/OpenPhoenix-ERP.git
-cd OpenPhoenix-ERP/OpenPhoenixERP_V2
+cd OpenPhoenix-ERP/OpenPhoenixERP_V3
 chmod +x install.sh
 ./install.sh
 ```
 
-Das Installationsskript führt dich interaktiv durch alle 8 Schritte:
+Das Installationsskript führt dich interaktiv durch alle Schritte:
 Python-Prüfung · Abhängigkeiten · Firmendaten · Rechnungseinstellungen ·
 Mahnwesen · SMTP-E-Mail · Datenbank-Initialisierung · Erster Start.
 
@@ -47,8 +58,10 @@ Am Ende hast du ein vollständig eingerichtetes, sofort einsatzbereites ERP.
 | 📨 Mahnwesen | Automatische Mahnstufen, Mahnschreiben per E-Mail |
 | 📊 Dashboard | Business Intelligence, KPIs, Auswertungen |
 | 🖹 XRechnung | EN16931-konforme XML-Rechnungen (B2B/Behörden) |
-| ✏️ Rechnungskorrektur | GoBD-konformes Storno mit Gutschrift |
-| 📝 Textvorlagen | Anpassbare Vorlagen mit Platzhalter-System |
+| ✏️ Rechnungskorrektur | GoBD-konformes Storno, Teilgutschriften, Zahlungseingänge, Skonto |
+| 📄 Angebote | Angebotserstellung und -verwaltung |
+| 📥 Eingangsrechnungen | Eingangsbelege erfassen und verwalten |
+| 📝 DATEV-Export | Buchungsdaten für den Steuerberater |
 | 🔒 Einstellungen | SMTP, Firmendaten, sichere Passwortverwaltung |
 
 ---
@@ -75,7 +88,7 @@ autonom handeln:
 
 2. Einmalig im Ilija-Terminal eingeben:
 ```
-erp_pfad_setzen(pfad="/pfad/zu/OpenPhoenixERP_V2")
+erp_pfad_setzen(pfad="/pfad/zu/OpenPhoenixERP_V3")
 ```
 
 Ab diesem Moment kennt Ilija das ERP dauerhaft. Beispielbefehle:
@@ -95,7 +108,7 @@ Ab diesem Moment kennt Ilija das ERP dauerhaft. Beispielbefehle:
 ```bash
 # 1. Repository klonen
 git clone https://github.com/Innobytix-IT/OpenPhoenix-ERP.git
-cd OpenPhoenix-ERP/OpenPhoenixERP_V2
+cd OpenPhoenix-ERP/OpenPhoenixERP_V3
 
 # 2. Virtuelle Umgebung erstellen und aktivieren
 python -m venv venv
@@ -132,7 +145,10 @@ python main.py
 # Dev-Abhängigkeiten installieren
 pip install -e .[dev]
 
-# Tests ausführen
+# Tests ausführen (212 Tests)
+pytest tests/ -v
+
+# Mit Coverage-Report
 pytest tests/ -v --cov=core
 ```
 
@@ -172,7 +188,17 @@ user = "erp_user"
 | XRechnung | lxml (EN16931) |
 | Konfiguration | TOML |
 | Passwortverwaltung | keyring (System-Tresor) |
-| Tests | pytest |
+| Tests | pytest (212 Tests) |
+
+---
+
+## Versionshistorie
+
+| Version | Highlights |
+|---|---|
+| **v3.0.0** | Rechnungskorrektur, Teilgutschriften, Zahlungseingänge, Skonto, Angebote, Eingangsrechnungen, DATEV-Export, 212 Tests |
+| **v2.0.0** | Kundenverwaltung, Rechnungen, Lagerverwaltung, Mahnwesen, Dashboard, XRechnung |
+| **v1.0.0** | Erste Version (Legacy) |
 
 ---
 
