@@ -659,15 +659,29 @@ class EinstellungenPanel(QWidget):
     def _build_vorlagen_tab(self) -> QWidget:
         tab = QWidget()
         root_layout = QVBoxLayout(tab)
-        root_layout.setContentsMargins(Spacing.XXL, Spacing.XL, Spacing.XXL, Spacing.XL)
-        root_layout.setSpacing(Spacing.MD)
+        root_layout.setContentsMargins(0, 0, 0, 0)
+        root_layout.setSpacing(0)
 
-        # ── Karte: Textvorlagen ──
-        card_vorl, cl_vorl = self._make_card("Textvorlagen bearbeiten", "📝")
-        cl_vorl.addWidget(_info(
+        # ── Unter-Tabs: Vorlagen | Eigene Platzhalter ──
+        sub_tabs = QTabWidget()
+        sub_tabs.setStyleSheet(
+            f"QTabWidget::pane {{ border: none; }}"
+            f"QTabBar::tab {{ padding: 8px 20px; font-size: {Fonts.SIZE_SM}pt; }}"
+            f"QTabBar::tab:selected {{ color: {Colors.PRIMARY}; "
+            f"border-bottom: 2px solid {Colors.PRIMARY}; font-weight: bold; }}"
+        )
+
+        # ══════════════════════════════════════════════════════════════
+        # SUB-TAB 1: Vorlagen bearbeiten
+        # ══════════════════════════════════════════════════════════════
+        tab_editor = QWidget()
+        editor_root = QVBoxLayout(tab_editor)
+        editor_root.setContentsMargins(Spacing.XXL, Spacing.XL, Spacing.XXL, Spacing.XL)
+        editor_root.setSpacing(Spacing.MD)
+
+        editor_root.addWidget(_info(
             "Bearbeiten Sie Texte für Rechnungshinweis, Mahnschreiben und E-Mails. "
-            "Platzhalter wie {{RECHNUNGSNUMMER}} werden beim Erstellen automatisch ersetzt. "
-            "Wählen Sie eine Vorlage, bearbeiten Sie den Text und klicken Sie 'Speichern'."
+            "Platzhalter wie {{RECHNUNGSNUMMER}} werden beim Erstellen automatisch ersetzt."
         ))
 
         # Vorlage auswählen
@@ -705,7 +719,7 @@ class EinstellungenPanel(QWidget):
         self._vorlage_combo.setMinimumHeight(38)
         sel_row.addWidget(lbl_sel)
         sel_row.addWidget(self._vorlage_combo, 1)
-        cl_vorl.addLayout(sel_row)
+        editor_root.addLayout(sel_row)
 
         # Splitter: Texteditor links | Platzhalter-Auswahl rechts
         splitter = QSplitter(Qt.Orientation.Horizontal)
@@ -718,7 +732,6 @@ class EinstellungenPanel(QWidget):
         editor_layout.setSpacing(Spacing.XS if hasattr(Spacing, "XS") else 4)
 
         self._vorlage_editor = QTextEdit()
-        self._vorlage_editor.setMinimumHeight(200)
         self._vorlage_editor.setPlaceholderText("Vorlage oben auswählen …")
         self._vorlage_editor.setStyleSheet(
             f"background: {Colors.BG_ELEVATED}; "
@@ -770,15 +783,23 @@ class EinstellungenPanel(QWidget):
         btn_insert.setFixedHeight(36)
         ph_layout.addWidget(btn_insert)
         splitter.addWidget(ph_widget)
-        splitter.setSizes([460, 220])
-        cl_vorl.addWidget(splitter, 1)
-        root_layout.addWidget(card_vorl, 1)
+        splitter.setSizes([520, 200])
+        editor_root.addWidget(splitter, 1)
 
-        # ── Karte: Eigene Platzhalter ──
-        card_ph, cl_ph = self._make_card("Eigene Platzhalter", "🏷")
-        cl_ph.addWidget(_info(
+        sub_tabs.addTab(tab_editor, "📝  Vorlagen bearbeiten")
+
+        # ══════════════════════════════════════════════════════════════
+        # SUB-TAB 2: Eigene Platzhalter
+        # ══════════════════════════════════════════════════════════════
+        tab_ph = QWidget()
+        ph_root = QVBoxLayout(tab_ph)
+        ph_root.setContentsMargins(Spacing.XXL, Spacing.XL, Spacing.XXL, Spacing.XL)
+        ph_root.setSpacing(Spacing.MD)
+
+        ph_root.addWidget(_info(
             "Definieren Sie eigene statische Platzhalter, z.B. {{SACHBEARBEITER}} = 'Max Muster'. "
-            "Sie erscheinen in der Liste oben und können in allen Vorlagen verwendet werden."
+            "Sie erscheinen in der Platzhalter-Liste im Editor und können in allen Vorlagen "
+            "verwendet werden."
         ))
 
         add_row = QHBoxLayout()
@@ -792,19 +813,26 @@ class EinstellungenPanel(QWidget):
         add_row.addWidget(self._new_ph_key, 1)
         add_row.addWidget(self._new_ph_value, 2)
         add_row.addWidget(btn_add_ph)
-        cl_ph.addLayout(add_row)
+        ph_root.addLayout(add_row)
 
         self._custom_ph_list = QListWidget()
-        self._custom_ph_list.setMaximumHeight(100)
         self._custom_ph_list.setAlternatingRowColors(True)
-        cl_ph.addWidget(self._custom_ph_list)
+        self._custom_ph_list.setStyleSheet(
+            f"QListWidget {{ background: {Colors.BG_ELEVATED}; "
+            f"border: 1px solid {Colors.BORDER}; border-radius: {Radius.SM}px; }}"
+            f"QListWidget::item {{ padding: 6px 10px; font-size: {Fonts.SIZE_SM}pt; }}"
+            f"QListWidget::item:selected {{ background: {Colors.PRIMARY}; color: white; }}"
+        )
+        ph_root.addWidget(self._custom_ph_list, 1)
 
         btn_del_ph = QPushButton("🗑  Ausgewählten löschen")
         btn_del_ph.setProperty("role", "danger")
         btn_del_ph.setMaximumWidth(240)
         btn_del_ph.setFixedHeight(36)
-        cl_ph.addWidget(btn_del_ph)
-        root_layout.addWidget(card_ph)
+        ph_root.addWidget(btn_del_ph)
+
+        sub_tabs.addTab(tab_ph, "🏷  Eigene Platzhalter")
+        root_layout.addWidget(sub_tabs)
 
         # ── Signale verbinden ──────────────────────────────────────────
         self._vorlage_combo.currentIndexChanged.connect(self._on_vorlage_changed)
