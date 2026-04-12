@@ -44,10 +44,13 @@ class KundenAuswahlDialog(QDialog):
 
         # Header
         header = QFrame()
+        header.setObjectName("headerFrame")
         header.setFixedHeight(56)
         header.setStyleSheet(f"""
-            background-color: {Colors.BG_SURFACE};
-            border-bottom: 1px solid {Colors.BORDER};
+            #headerFrame {{
+                background-color: {Colors.BG_SURFACE};
+                border-bottom: 1px solid {Colors.BORDER};
+            }}
         """)
         h_layout = QHBoxLayout(header)
         h_layout.setContentsMargins(Spacing.XL, 0, Spacing.XL, 0)
@@ -89,10 +92,13 @@ class KundenAuswahlDialog(QDialog):
 
         # Footer
         footer = QFrame()
+        footer.setObjectName("footerFrame")
         footer.setFixedHeight(64)
         footer.setStyleSheet(f"""
-            background-color: {Colors.BG_SURFACE};
-            border-top: 1px solid {Colors.BORDER};
+            #footerFrame {{
+                background-color: {Colors.BG_SURFACE};
+                border-top: 1px solid {Colors.BORDER};
+            }}
         """)
         f_layout = QHBoxLayout(footer)
         f_layout.setContentsMargins(Spacing.XL, 0, Spacing.XL, 0)
@@ -104,7 +110,9 @@ class KundenAuswahlDialog(QDialog):
         f_layout.addWidget(cancel_btn)
 
         self._select_btn = QPushButton("✅  Kunden wählen")
-        self._select_btn.setMinimumWidth(160)
+        self._select_btn.setProperty("role", "primary")
+        self._select_btn.setMinimumWidth(180)
+        self._select_btn.setFixedHeight(38)
         self._select_btn.setEnabled(False)
         self._select_btn.clicked.connect(self._on_select)
         f_layout.addWidget(self._select_btn)

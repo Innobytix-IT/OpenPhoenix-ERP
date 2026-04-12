@@ -51,9 +51,6 @@ AUFWAND_KONTEN = {
 }
 AUFWAND_DEFAULT = "6300"
 
-# Automatikkonten in DATEV (bei diesen darf KEIN Steuerschlüssel übergeben werden!)
-AUTOMATIK_KONTEN = {"8400", "8300", "3400"}
-
 # Debitoren/Kreditoren-Bereiche
 DEBITOREN_START = 10000   # Debitor-Kontonummern ab 10000
 KREDITOREN_KONTO = "70000"  # Sammel-Kreditorkonto für Eingangsrechnungen
@@ -200,7 +197,7 @@ class DatevService:
         Returns:
             DatevExportResult mit CSV-Bytes und Metadaten
         """
-        buchungen: list[DatevBuchung] =[]
+        buchungen: list[DatevBuchung] = []
         summe_ar = Decimal("0")
         summe_er = Decimal("0")
 
@@ -246,7 +243,7 @@ class DatevService:
         self, session: Session, von: str, bis: str
     ) -> tuple[list[DatevBuchung], Decimal]:
         """Liest finalisierte Ausgangsrechnungen im Zeitraum."""
-        buchungen: list[DatevBuchung] =[]
+        buchungen: list[DatevBuchung] = []
         summe = Decimal("0")
 
         # Datum-Parsing für Vergleich
@@ -326,7 +323,7 @@ class DatevService:
         self, session: Session, von: str, bis: str
     ) -> tuple[list[DatevBuchung], Decimal]:
         """Liest Eingangsrechnungen/Belege im Zeitraum."""
-        buchungen: list[DatevBuchung] =[]
+        buchungen: list[DatevBuchung] = []
         summe = Decimal("0")
 
         try:
@@ -394,10 +391,8 @@ class DatevService:
         Zeile 3+: Buchungsdaten
         """
         firma = config.get("company", "name", "OpenPhoenix")
-        
-        # Dynamisch aus der Konfiguration laden (Fallback auf 1001 bzw. 1)
-        berater_nr = str(config.get("datev", "berater_nr", "1001"))
-        mandanten_nr = str(config.get("datev", "mandanten_nr", "1"))
+        berater_nr = "1001"      # Standard-Beraternummer
+        mandanten_nr = "1"       # Standard-Mandantennummer
 
         # Geschäftsjahr aus Zeitraum ableiten
         try:
@@ -419,7 +414,7 @@ class DatevService:
         #         Berater; Mandant; WJ-Beginn; Sachkontenlänge; Datum_von; Datum_bis;
         #         Bezeichnung; Diktatzeichen; Buchungstyp; Rechnungslegungszweck;
         #         Festschreibung; WKZ
-        header =[
+        header = [
             "EXTF",        # Kennung: externes Format
             700,           # Versionsnummer
             21,            # Kategorie: Buchungsstapel
@@ -455,7 +450,7 @@ class DatevService:
         writer.writerow(header)
 
         # ----- Zeile 2: Spaltenüberschriften -----
-        spalten =[
+        spalten = [
             "Umsatz (ohne Soll/Haben-Kz)",
             "Soll/Haben-Kennzeichen",
             "WKZ Umsatz",
@@ -583,12 +578,6 @@ class DatevService:
         for b in buchungen:
             # DATEV erwartet 116 Spalten — wir füllen die relevanten
             zeile = [""] * 116
-            
-            # KORREKTUR: Bei Automatikkonten darf der BU-Schlüssel nicht gesetzt sein
-            bu_schluessel = b.steuerschluessel
-            if b.konto in AUTOMATIK_KONTEN or b.gegenkonto in AUTOMATIK_KONTEN:
-                bu_schluessel = ""
-
             zeile[0] = _format_betrag(b.umsatz)      # Umsatz
             zeile[1] = b.soll_haben                    # S/H
             zeile[2] = "EUR"                           # WKZ
@@ -597,7 +586,7 @@ class DatevService:
             zeile[5] = ""                              # WKZ Basis
             zeile[6] = b.konto                         # Konto
             zeile[7] = b.gegenkonto                    # Gegenkonto
-            zeile[8] = bu_schluessel                   # BU-Schlüssel
+            zeile[8] = b.steuerschluessel              # BU-Schlüssel
             zeile[9] = b.belegdatum                    # Belegdatum (TTMM)
             zeile[10] = b.belegnummer[:36]             # Belegfeld 1 (max 36 Zeichen)
             zeile[11] = ""                             # Belegfeld 2

@@ -23,6 +23,7 @@ from sqlalchemy.orm import Session
 
 from core.models import Rechnung, Rechnungsposten, Artikel, Kunde, AuditLog, LagerBewegung
 from core.audit.service import audit, AuditAction
+from core.utils import parse_datum
 
 logger = logging.getLogger(__name__)
 
@@ -712,13 +713,10 @@ class RechnungsService:
         )
 
         for rechnung in offene:
-            try:
-                faellig = datetime.strptime(
-                    rechnung.faelligkeitsdatum, "%d.%m.%Y"
-                ).date()
-                tage_ueberfaellig = (heute - faellig).days
-            except (ValueError, TypeError):
+            faellig = parse_datum(rechnung.faelligkeitsdatum)
+            if faellig is None:
                 continue
+            tage_ueberfaellig = (heute - faellig).days
 
             if tage_ueberfaellig <= 0:
                 continue  # Noch nicht fällig

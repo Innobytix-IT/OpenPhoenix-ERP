@@ -113,6 +113,10 @@ class TableModel(QAbstractTableModel):
     def columnCount(self, parent=QModelIndex()) -> int:
         return len(self._columns)
 
+    # Custom Role für Zeilenfarben – wird NICHT als ForegroundRole
+    # zurückgegeben, damit Qt die Farbe nicht bei Selektion erzwingt.
+    RowColorRole = Qt.ItemDataRole.UserRole + 100
+
     def data(self, index: QModelIndex, role: int = Qt.ItemDataRole.DisplayRole):
         if not index.isValid():
             return None
@@ -126,10 +130,8 @@ class TableModel(QAbstractTableModel):
             except IndexError:
                 return ""
 
-        if role == Qt.ItemDataRole.ForegroundRole:
-            color = self._row_colors.get(row)
-            if color:
-                return color
+        if role == self.RowColorRole:
+            return self._row_colors.get(row)
 
         if role == Qt.ItemDataRole.TextAlignmentRole:
             return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
@@ -174,6 +176,23 @@ class TableModel(QAbstractTableModel):
             return None
 
 
+class _SelectionAwareDelegate(QStyledItemDelegate):
+    """Wendet Zeilenfarben aus TableModel.RowColorRole an, erzwingt aber
+    weiße Schrift wenn die Zeile selektiert ist."""
+
+    def initStyleOption(self, option, index):
+        super().initStyleOption(option, index)
+        if option.state & QStyleOptionViewItem.State_Selected:
+            # Selektiert → weiße Schrift, egal welche Zeilenfarbe
+            option.palette.setColor(option.palette.ColorRole.Text, QColor("#FFFFFF"))
+            option.palette.setColor(option.palette.ColorRole.HighlightedText, QColor("#FFFFFF"))
+        else:
+            # Nicht selektiert → ggf. Zeilenfarbe anwenden
+            color = index.data(TableModel.RowColorRole)
+            if color:
+                option.palette.setColor(option.palette.ColorRole.Text, color)
+
+
 class DataTable(QTableView):
     """
     Vorkonfigurierter QTableView mit OpenPhoenix-Styling.
@@ -204,6 +223,7 @@ class DataTable(QTableView):
         self._proxy.setSortCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.setModel(self._proxy)
 
+        self.setItemDelegate(_SelectionAwareDelegate(self))
         self._configure(column_widths, stretch_column)
         self._connect_signals()
 

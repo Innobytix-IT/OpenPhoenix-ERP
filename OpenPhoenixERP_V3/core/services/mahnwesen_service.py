@@ -277,6 +277,10 @@ class MahnwesenService:
                 uebersicht.mahnung2.append(dto)
             elif r.status == RechnungStatus.INKASSO:
                 uebersicht.inkasso.append(dto)
+            elif r.status == RechnungStatus.OFFEN and tage > 0:
+                # Überfällige OFFEN-Rechnungen die noch nicht eskaliert
+                # wurden → als Erinnerung anzeigen
+                uebersicht.erinnerung.append(dto)
 
         # Rechnungen die bald fällig werden (nächste 7 Tage)
         # Hinweis: Datumsfilter in Python nötig, da faelligkeitsdatum als String
@@ -295,7 +299,7 @@ class MahnwesenService:
         )
         for r in bald_rechnungen:
             faellig = parse_datum(r.faelligkeitsdatum)
-            if faellig and date.today() < faellig <= bald:
+            if faellig and date.today() <= faellig <= bald:
                 tage_bis = (faellig - date.today()).days
                 dto = UeberfaelligeDTO(
                     rechnung_id=r.id,
@@ -474,6 +478,13 @@ class MahnwesenService:
         Berechnet die nächste Mahnstufe und wie viele Tage noch bis dahin.
         Returns (naechste_stufe, tage_bis_naechste) oder (None, None) bei Inkasso.
         """
+        # Nur mahnfähige Status haben eine nächste Stufe
+        if aktueller_status not in (
+            RechnungStatus.OFFEN, RechnungStatus.ERINNERUNG,
+            RechnungStatus.MAHNUNG1, RechnungStatus.MAHNUNG2,
+        ):
+            return None, None
+
         grenzen = [
             (konfig.reminder_days,  RechnungStatus.ERINNERUNG),
             (konfig.mahnung1_days,  RechnungStatus.MAHNUNG1),
@@ -485,7 +496,7 @@ class MahnwesenService:
             if tage_ueberfaellig < grenze:
                 return status, grenze - tage_ueberfaellig
 
-        return None, None  # Bereits auf Inkasso
+        return None, None  # Bereits auf Inkasso-Niveau
 
 
 # ---------------------------------------------------------------------------

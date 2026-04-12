@@ -391,3 +391,392 @@ class TestMahnKonfig:
         )
         assert naechste is None
         assert tage is None
+
+
+# ---------------------------------------------------------------------------
+# ISO-Datumsformat (YYYY-MM-DD) – Regression
+# ---------------------------------------------------------------------------
+
+def _mach_rechnung_iso(session, tage_ueberfaellig: int, status=RechnungStatus.OFFEN) -> Rechnung:
+    """Erstellt Rechnung mit ISO-Datumsformat (YYYY-MM-DD) statt TT.MM.JJJJ."""
+    faellig = date.today() - timedelta(days=tage_ueberfaellig)
+    kunde = session.query(Kunde).first()
+    if not kunde:
+        kunde = Kunde(zifferncode=5001, name="ISOTest", vorname="Maria", is_active=True)
+        session.add(kunde)
+        session.flush()
+    rechnung = Rechnung(
+        kunde_id=kunde.id,
+        rechnungsnummer=f"ISO-{tage_ueberfaellig:04d}-{id(faellig)}",
+        rechnungsdatum=date.today().strftime("%Y-%m-%d"),
+        faelligkeitsdatum=faellig.strftime("%Y-%m-%d"),  # ISO-Format!
+        mwst_prozent=Decimal("19"),
+        summe_netto=Decimal("100.00"),
+        summe_mwst=Decimal("19.00"),
+        summe_brutto=Decimal("119.00"),
+        mahngebuehren=Decimal("0"),
+        offener_betrag=Decimal("119.00"),
+        status=status,
+        is_finalized=True,
+    )
+    session.add(rechnung)
+    session.flush()
+    return rechnung
+
+
+class TestISODatumsformat:
+    """Stellt sicher dass Eskalation und Übersicht auch mit ISO-Datumstrings
+    (YYYY-MM-DD) funktionieren – Regression für den parse_datum-Bug."""
+
+    def test_eskalation_mit_iso_datum(self, db, service, konfig):
+        """Rechnung mit ISO-Fälligkeitsdatum wird korrekt eskaliert."""
+        with db.session() as session:
+            r = _mach_rechnung_iso(session, tage_ueberfaellig=10)
+            rechnung_id = r.id
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+
+        assert ergebnis["eskaliert"] == 1
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+        assert r.status == RechnungStatus.ERINNERUNG
+
+    def test_eskalation_iso_mahnung1(self, db, service, konfig):
+        """ISO-Datum: 25 Tage überfällig → Mahnung1."""
+        with db.session() as session:
+            r = _mach_rechnung_iso(session, tage_ueberfaellig=25)
+            rechnung_id = r.id
+
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+        assert r.status == RechnungStatus.MAHNUNG1
+
+    def test_uebersicht_mit_iso_datum(self, db, service, konfig):
+        """Übersicht zeigt Rechnungen mit ISO-Datum korrekt an."""
+        with db.session() as session:
+            _mach_rechnung_iso(session, 10, RechnungStatus.ERINNERUNG)
+            _mach_rechnung_iso(session, 40, RechnungStatus.MAHNUNG2)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        assert len(ueb.erinnerung) == 1
+        assert len(ueb.mahnung2) == 1
+
+    def test_bald_faellig_iso(self, db, service, konfig):
+        """Bald fällige Rechnungen mit ISO-Datum erscheinen in bald_faellig."""
+        in_drei = date.today() + timedelta(days=3)
+        with db.session() as session:
+            kunde = Kunde(zifferncode=5099, name="ISOBald", vorname="Z", is_active=True)
+            session.add(kunde)
+            session.flush()
+            r = Rechnung(
+                kunde_id=kunde.id,
+                rechnungsnummer="ISO-BALD-001",
+                rechnungsdatum=date.today().strftime("%Y-%m-%d"),
+                faelligkeitsdatum=in_drei.strftime("%Y-%m-%d"),
+                mwst_prozent=Decimal("19"),
+                summe_netto=Decimal("200"), summe_mwst=Decimal("38"),
+                summe_brutto=Decimal("238"), mahngebuehren=Decimal("0"),
+                offener_betrag=Decimal("238"),
+                status=RechnungStatus.OFFEN, is_finalized=True,
+            )
+            session.add(r)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        assert len(ueb.bald_faellig) == 1
+        assert ueb.bald_faellig[0].rechnungsnummer == "ISO-BALD-001"
+
+    def test_gemischte_formate(self, db, service, konfig):
+        """Rechnungen mit gemischten Datumsformaten werden alle erkannt."""
+        with db.session() as session:
+            # Deutsch-Format
+            _mach_rechnung(session, tage_ueberfaellig=10)
+            # ISO-Format
+            _mach_rechnung_iso(session, tage_ueberfaellig=10)
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+
+        assert ergebnis["eskaliert"] == 2
+
+
+# ---------------------------------------------------------------------------
+# End-to-End Eskalation: Kompletter Lebenszyklus
+# ---------------------------------------------------------------------------
+
+class TestEskalationLebenszyklus:
+    """Testet den vollständigen Eskalationsverlauf einer Rechnung über
+    alle Mahnstufen hinweg."""
+
+    def test_vollstaendiger_eskalationspfad(self, db, service, konfig):
+        """Offen → Erinnerung → Mahnung1 → Mahnung2 → Inkasso."""
+        with db.session() as session:
+            r = _mach_rechnung(session, tage_ueberfaellig=10)
+            rechnung_id = r.id
+
+        # Schritt 1: Offen → Erinnerung (10 Tage >= 7)
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert r.status == RechnungStatus.ERINNERUNG
+            # Fälligkeitsdatum auf 25 Tage überfällig setzen
+            faellig = date.today() - timedelta(days=25)
+            r.faelligkeitsdatum = faellig.strftime("%d.%m.%Y")
+
+        # Schritt 2: Erinnerung → Mahnung1 (25 Tage >= 21)
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert r.status == RechnungStatus.MAHNUNG1
+            faellig = date.today() - timedelta(days=38)
+            r.faelligkeitsdatum = faellig.strftime("%d.%m.%Y")
+
+        # Schritt 3: Mahnung1 → Mahnung2 (38 Tage >= 35)
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert r.status == RechnungStatus.MAHNUNG2
+            faellig = date.today() - timedelta(days=52)
+            r.faelligkeitsdatum = faellig.strftime("%d.%m.%Y")
+
+        # Schritt 4: Mahnung2 → Inkasso (52 Tage >= 49)
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert r.status == RechnungStatus.INKASSO
+
+        # Schritt 5: Inkasso bleibt Inkasso
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+        assert ergebnis["eskaliert"] == 0
+
+    def test_eskalation_ueberspringt_stufen(self, db, service, konfig):
+        """Eine Rechnung die 50 Tage überfällig ist springt direkt auf Inkasso."""
+        with db.session() as session:
+            r = _mach_rechnung(session, tage_ueberfaellig=50)
+            rechnung_id = r.id
+
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+        # Von Offen direkt auf Inkasso (>= 49 Tage)
+        assert r.status == RechnungStatus.INKASSO
+
+    def test_mehrere_rechnungen_gleichzeitig(self, db, service, konfig):
+        """Mehrere Rechnungen mit verschiedenen Überfälligkeiten werden
+        korrekt in ihre jeweilige Stufe eskaliert."""
+        with db.session() as session:
+            r1 = _mach_rechnung(session, tage_ueberfaellig=10)   # → Erinnerung
+            r2 = _mach_rechnung(session, tage_ueberfaellig=25)   # → Mahnung1
+            r3 = _mach_rechnung(session, tage_ueberfaellig=38)   # → Mahnung2
+            r4 = _mach_rechnung(session, tage_ueberfaellig=52)   # → Inkasso
+            r5 = _mach_rechnung(session, tage_ueberfaellig=3)    # → bleibt Offen
+            ids = [r1.id, r2.id, r3.id, r4.id, r5.id]
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+
+        assert ergebnis["eskaliert"] == 4  # r5 wird nicht eskaliert
+
+        with db.session() as session:
+            assert session.get(Rechnung, ids[0]).status == RechnungStatus.ERINNERUNG
+            assert session.get(Rechnung, ids[1]).status == RechnungStatus.MAHNUNG1
+            assert session.get(Rechnung, ids[2]).status == RechnungStatus.MAHNUNG2
+            assert session.get(Rechnung, ids[3]).status == RechnungStatus.INKASSO
+            assert session.get(Rechnung, ids[4]).status == RechnungStatus.OFFEN
+
+    def test_mahngebuehren_kumulieren(self, db, service, konfig):
+        """Mahngebühren werden bei jeder Eskalation aufaddiert."""
+        with db.session() as session:
+            r = _mach_rechnung(session, tage_ueberfaellig=25)
+            rechnung_id = r.id
+
+        # Offen → Mahnung1: 5,00 €
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert Decimal(str(r.mahngebuehren)) == Decimal("5.00")
+            # Auf 38 Tage setzen
+            faellig = date.today() - timedelta(days=38)
+            r.faelligkeitsdatum = faellig.strftime("%d.%m.%Y")
+
+        # Mahnung1 → Mahnung2: +10,00 €
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert Decimal(str(r.mahngebuehren)) == Decimal("15.00")
+            faellig = date.today() - timedelta(days=52)
+            r.faelligkeitsdatum = faellig.strftime("%d.%m.%Y")
+
+        # Mahnung2 → Inkasso: +25,00 €
+        with db.session() as session:
+            service.pruefe_und_eskaliere(session, konfig)
+        with db.session() as session:
+            r = session.get(Rechnung, rechnung_id)
+            assert Decimal(str(r.mahngebuehren)) == Decimal("40.00")
+
+    def test_stornierte_werden_ignoriert(self, db, service, konfig):
+        """Stornierte Rechnungen tauchen nicht in der Eskalation auf."""
+        with db.session() as session:
+            _mach_rechnung(session, tage_ueberfaellig=30,
+                           status=RechnungStatus.STORNIERT)
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+        assert ergebnis["eskaliert"] == 0
+
+    def test_gutschriften_werden_ignoriert(self, db, service, konfig):
+        """Gutschriften tauchen nicht in der Eskalation auf."""
+        with db.session() as session:
+            _mach_rechnung(session, tage_ueberfaellig=30,
+                           status=RechnungStatus.GUTSCHRIFT)
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+        assert ergebnis["eskaliert"] == 0
+
+    def test_nicht_finalisierte_werden_ignoriert(self, db, service, konfig):
+        """Entwürfe (nicht finalisiert) werden nicht eskaliert."""
+        with db.session() as session:
+            kunde = session.query(Kunde).first()
+            if not kunde:
+                kunde = Kunde(zifferncode=9001, name="Draft", vorname="X", is_active=True)
+                session.add(kunde)
+                session.flush()
+            faellig = date.today() - timedelta(days=30)
+            r = Rechnung(
+                kunde_id=kunde.id,
+                rechnungsnummer="ENTWURF-001",
+                rechnungsdatum=date.today().strftime("%d.%m.%Y"),
+                faelligkeitsdatum=faellig.strftime("%d.%m.%Y"),
+                mwst_prozent=Decimal("19"),
+                summe_netto=Decimal("100"), summe_mwst=Decimal("19"),
+                summe_brutto=Decimal("119"), mahngebuehren=Decimal("0"),
+                offener_betrag=Decimal("119"),
+                status=RechnungStatus.OFFEN,
+                is_finalized=False,  # Nicht finalisiert!
+            )
+            session.add(r)
+
+        with db.session() as session:
+            ergebnis = service.pruefe_und_eskaliere(session, konfig)
+        assert ergebnis["eskaliert"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Übersicht: Erweiterte Tests
+# ---------------------------------------------------------------------------
+
+class TestUebersichtErweitert:
+    def test_offene_ueberfaellige_als_erinnerung(self, db, service, konfig):
+        """OFFEN + überfällig → erscheint in uebersicht.erinnerung."""
+        with db.session() as session:
+            _mach_rechnung(session, tage_ueberfaellig=5,
+                           status=RechnungStatus.OFFEN)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        assert len(ueb.erinnerung) == 1
+        assert ueb.erinnerung[0].status == RechnungStatus.OFFEN
+
+    def test_uebersicht_gesamtforderung(self, db, service, konfig):
+        """Gesamtforderung = offener_betrag + mahngebuehren."""
+        with db.session() as session:
+            r = _mach_rechnung(session, 10, RechnungStatus.MAHNUNG1)
+            r.mahngebuehren = Decimal("5.00")
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        assert ueb.gesamt_anzahl == 1
+        dto = ueb.mahnung1[0]
+        assert dto.gesamtforderung == Decimal("124.00")
+
+    def test_uebersicht_tage_ueberfaellig(self, db, service, konfig):
+        """tage_ueberfaellig wird korrekt berechnet."""
+        with db.session() as session:
+            _mach_rechnung(session, 14, RechnungStatus.ERINNERUNG)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        assert ueb.erinnerung[0].tage_ueberfaellig == 14
+
+    def test_uebersicht_naechste_stufe(self, db, service, konfig):
+        """naechste_stufe zeigt wohin die Rechnung als nächstes eskaliert."""
+        with db.session() as session:
+            _mach_rechnung(session, 10, RechnungStatus.ERINNERUNG)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        dto = ueb.erinnerung[0]
+        assert dto.naechste_stufe == RechnungStatus.MAHNUNG1
+
+    def test_uebersicht_sortierung(self, db, service, konfig):
+        """alle-Liste ist nach Stufe sortiert: Inkasso zuerst."""
+        with db.session() as session:
+            _mach_rechnung(session, 10, RechnungStatus.ERINNERUNG)
+            _mach_rechnung(session, 55, RechnungStatus.INKASSO)
+            _mach_rechnung(session, 25, RechnungStatus.MAHNUNG1)
+
+        with db.session() as session:
+            ueb = service.uebersicht(session, konfig)
+
+        alle = ueb.alle
+        assert len(alle) == 3
+        assert alle[0].status == RechnungStatus.INKASSO
+        assert alle[1].status == RechnungStatus.MAHNUNG1
+        assert alle[2].status == RechnungStatus.ERINNERUNG
+
+
+# ---------------------------------------------------------------------------
+# Nächste-Stufe Berechnung: Vollständig
+# ---------------------------------------------------------------------------
+
+class TestNaechsteStufe:
+    def test_offen_naechste_erinnerung(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.OFFEN, 0, konfig)
+        assert naechste == RechnungStatus.ERINNERUNG
+        assert tage == 7
+
+    def test_erinnerung_naechste_mahnung1(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.ERINNERUNG, 10, konfig)
+        assert naechste == RechnungStatus.MAHNUNG1
+        assert tage == 11  # 21 - 10
+
+    def test_mahnung1_naechste_mahnung2(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.MAHNUNG1, 25, konfig)
+        assert naechste == RechnungStatus.MAHNUNG2
+        assert tage == 10  # 35 - 25
+
+    def test_mahnung2_naechste_inkasso(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.MAHNUNG2, 40, konfig)
+        assert naechste == RechnungStatus.INKASSO
+        assert tage == 9  # 49 - 40
+
+    def test_inkasso_keine_naechste(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.INKASSO, 60, konfig)
+        assert naechste is None
+        assert tage is None
+
+    def test_bezahlt_keine_naechste(self, service, konfig):
+        naechste, tage = service._naechste_stufe(RechnungStatus.BEZAHLT, 30, konfig)
+        assert naechste is None
+        assert tage is None

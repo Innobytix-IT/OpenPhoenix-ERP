@@ -259,10 +259,12 @@ class BelegeService:
         offen = sum(1 for b in belege if b.zahlungsstatus == Zahlungsstatus.OFFEN)
         bezahlt = sum(1 for b in belege if b.zahlungsstatus == Zahlungsstatus.BEZAHLT)
         summe_netto = sum(
-            Decimal(str(b.betrag_netto or 0)) for b in belege
+            (Decimal(str(b.betrag_netto or 0)) for b in belege),
+            Decimal("0")
         )
         summe_brutto = sum(
-            Decimal(str(b.betrag_brutto or 0)) for b in belege
+            (Decimal(str(b.betrag_brutto or 0)) for b in belege),
+            Decimal("0")
         )
         return {
             "gesamt": gesamt,
@@ -361,7 +363,7 @@ class BelegeService:
         if fehler:
             return ServiceResult.fail(fehler)
 
-        beleg = session.query(EingangsRechnung).get(beleg_id)
+        beleg = session.get(EingangsRechnung, beleg_id)
         if not beleg:
             return ServiceResult.fail("Beleg nicht gefunden.")
 
@@ -430,7 +432,7 @@ class BelegeService:
         self, session: Session, beleg_id: int, neuer_status: str
     ) -> ServiceResult:
         """Zahlungsstatus eines Belegs ändern (Offen ↔ Bezahlt)."""
-        beleg = session.query(EingangsRechnung).get(beleg_id)
+        beleg = session.get(EingangsRechnung, beleg_id)
         if not beleg:
             return ServiceResult.fail("Beleg nicht gefunden.")
 
@@ -464,7 +466,7 @@ class BelegeService:
         self, session: Session, beleg_id: int
     ) -> ServiceResult:
         """Beleg als inaktiv markieren (GoBD-konform, kein Löschen)."""
-        beleg = session.query(EingangsRechnung).get(beleg_id)
+        beleg = session.get(EingangsRechnung, beleg_id)
         if not beleg:
             return ServiceResult.fail("Beleg nicht gefunden.")
 
