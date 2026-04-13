@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QLabel, QLineEdit,
     QPushButton, QFrame, QTableView, QHeaderView, QAbstractItemView,
     QDialog, QDialogButtonBox, QSizePolicy, QMessageBox,
-    QStyledItemDelegate, QStyleOptionViewItem,
+    QStyledItemDelegate, QStyleOptionViewItem, QStyle,
 )
 
 from ui.theme.theme import Colors, Fonts, Spacing, Radius
@@ -182,7 +182,7 @@ class _SelectionAwareDelegate(QStyledItemDelegate):
 
     def initStyleOption(self, option, index):
         super().initStyleOption(option, index)
-        if option.state & QStyleOptionViewItem.State_Selected:
+        if option.state & QStyle.StateFlag.State_Selected:
             # Selektiert → weiße Schrift, egal welche Zeilenfarbe
             option.palette.setColor(option.palette.ColorRole.Text, QColor("#FFFFFF"))
             option.palette.setColor(option.palette.ColorRole.HighlightedText, QColor("#FFFFFF"))
