@@ -1,3 +1,4 @@
+<img width="1528" height="428" alt="OpenPhoenix-ERP-Banner-logo" src="https://github.com/user-attachments/assets/0e9b9274-557e-43f1-b9fc-44f04138cac6" />
 # 🔥 OpenPhoenix ERP v3
 
 **Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
