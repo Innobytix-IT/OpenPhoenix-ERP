@@ -1,4 +1,4 @@
-##🔥 OpenPhoenix ERP v2
+# 🔥 OpenPhoenix ERP v2
 
 **Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
 
