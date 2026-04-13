@@ -1,4 +1,5 @@
-# 🔥 OpenPhoenix ERP v2
+<img width="1528" height="428" alt="OpenPhoenix-ERP-Banner-logo" src="https://github.com/user-attachments/assets/707d077b-a9f6-4186-952f-d58cdf9fef51" />
+🔥 OpenPhoenix ERP v2
 
 **Freies, modulares ERP-System für kleine und mittlere Unternehmen.**
 
