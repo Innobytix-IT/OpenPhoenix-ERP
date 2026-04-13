@@ -46,7 +46,9 @@ Mahnwesen · SMTP-E-Mail · Datenbank-Initialisierung · Erster Start.
 Am Ende hast du ein vollständig eingerichtetes, sofort einsatzbereites ERP.
 
 > **Windows-Nutzer:** Manuell installieren – siehe Abschnitt [Manuelle Installation](#manuelle-installation).
-> Oder die Windows exe hier downloaden und sofort loslegen: https://github.com/Innobytix-IT/OpenPhoenix-ERP/releases/download/v3.0.0/OpenPhoenix_ERP_v3.exe
+>
+> 
+> Oder die Windows- exe hier downloaden und sofort loslegen: https://github.com/Innobytix-IT/OpenPhoenix-ERP/releases/download/v3.0.0/OpenPhoenix_ERP_v3.exe
 
 ---
 
